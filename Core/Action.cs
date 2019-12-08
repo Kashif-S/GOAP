@@ -5,5 +5,5 @@ public interface IAction
 {
     int GetCost();
     bool ValidateState(State state);
-    void UpdateState(State state);
+    State UpdateState(State state);
 }
