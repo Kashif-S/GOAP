@@ -1,10 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-public class Planner
+public class Planner<T, S> where T : GoapAgent where S : State
 {
     // TODO: actions should be a set (?)
-    public static Plan GeneratePlan(Goal goal, State state, List<IAction> actions)
+    public Plan<T, S> GeneratePlan(Goal<S> goal, S state, List<Action<T, S>> actions)
     {
         // TODO: Sort actions based on cost
 
@@ -29,12 +29,12 @@ public class Planner
 
             if (goal.ValidateState(currentState.state))
             {
-                return new Plan(RetraceActions(currentState));
+                return new Plan<T, S>(goal, RetraceActions(currentState));
             }
 
             for (int i = 0; i < actions.Count; i++)
             {
-                State newState = actions[i].UpdateState(currentState.state);
+                S newState = actions[i].UpdateState(currentState.state);
                 if (closedSet.Contains(newState) && actions[i].ValidateState(currentState.state))
                 {
                     int newGCost = currentState.gCost + actions[i].GetCost();
@@ -50,9 +50,9 @@ public class Planner
         return null;
     }
 
-    private static List<IAction> RetraceActions(PlannerState plannerState)
+    private List<Action<T, S>> RetraceActions(PlannerState plannerState)
     {
-        List<IAction> actionSequence = new List<IAction>();
+        List<Action<T, S>> actionSequence = new List<Action<T, S>>();
 
         while (plannerState.previousState != null)
         {
@@ -65,14 +65,14 @@ public class Planner
 
     private class PlannerState
     {
-        public State state { get; private set; }
+        public S state { get; private set; }
         public PlannerState previousState { get; private set; }
-        public IAction action { get; private set; }
+        public Action<T, S> action { get; private set; }
 
         public int gCost { get; private set; }
         public int hCost { get; private set; }
 
-        public PlannerState(State state, PlannerState previousState, IAction action, int gCost)
+        public PlannerState(S state, PlannerState previousState, Action<T, S> action, int gCost)
         {
             this.state = state;
             this.previousState = previousState;

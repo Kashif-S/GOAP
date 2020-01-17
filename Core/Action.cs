@@ -1,9 +1,23 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
-public interface IAction
+public abstract class Action<T, S> : ScriptableObject where T : GoapAgent where S : State
 {
-    int GetCost();
-    bool ValidateState(State state);
-    State UpdateState(State state);
+    public abstract int GetCost();
+    public abstract bool ValidateState(State state);
+    public abstract S UpdateState(State state);
+    public bool act(T agent, S state)
+    {
+        if(validateLocation(agent, state))
+        {
+            return performAction(agent, state);
+        } else {
+            moveToLocation(agent, state);
+            return false;
+        }
+    }
+    protected abstract bool validateLocation(T agent, S state);
+    protected abstract void moveToLocation(T agent, S state);
+    protected abstract bool performAction(T agent, S state);
 }
