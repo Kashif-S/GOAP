@@ -18,6 +18,7 @@ public abstract class GoapController<T, S> : MonoBehaviour where T : GoapAgent w
 
     void Awake()
     {
+        InitializeState();
         planner = new Planner<T, S>();
     }
 
@@ -62,4 +63,6 @@ public abstract class GoapController<T, S> : MonoBehaviour where T : GoapAgent w
             currentAction = null;
         }
     }
+
+    protected abstract void InitializeState();
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class GoapAgent : MonoBehaviour
+public class MiningAgent : GoapAgent
 {
 
 }

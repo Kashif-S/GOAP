@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class GoapAgent : MonoBehaviour
+public class InventoryState : State
 {
-
+    public int money = 0;
 }
