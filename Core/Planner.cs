@@ -1,10 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-public class Planner<T, S> where T : GoapAgent where S : State
+public class Planner<T, S, A> where T : GoapAgent where S : State where A : Action<T, S>
 {
     // TODO: actions should be a set (?)
-    public Plan<T, S> GeneratePlan(Goal<S> goal, S state, List<Action<T, S>> actions)
+    public Plan<T, S, A> GeneratePlan(Goal<S> goal, S state, List<A> actions)
     {
         // TODO: Sort actions based on cost
 
@@ -29,7 +29,7 @@ public class Planner<T, S> where T : GoapAgent where S : State
 
             if (goal.ValidateState(currentState.state))
             {
-                return new Plan<T, S>(goal, RetraceActions(currentState));
+                return new Plan<T, S, A>(goal, RetraceActions(currentState));
             }
 
             for (int i = 0; i < actions.Count; i++)
@@ -50,9 +50,9 @@ public class Planner<T, S> where T : GoapAgent where S : State
         return null;
     }
 
-    private List<Action<T, S>> RetraceActions(PlannerState plannerState)
+    private List<A> RetraceActions(PlannerState plannerState)
     {
-        List<Action<T, S>> actionSequence = new List<Action<T, S>>();
+        List<A> actionSequence = new List<A>();
 
         while (plannerState.previousState != null)
         {
@@ -67,12 +67,12 @@ public class Planner<T, S> where T : GoapAgent where S : State
     {
         public S state { get; private set; }
         public PlannerState previousState { get; private set; }
-        public Action<T, S> action { get; private set; }
+        public A action { get; private set; }
 
         public int gCost { get; private set; }
         public int hCost { get; private set; }
 
-        public PlannerState(S state, PlannerState previousState, Action<T, S> action, int gCost)
+        public PlannerState(S state, PlannerState previousState, A action, int gCost)
         {
             this.state = state;
             this.previousState = previousState;

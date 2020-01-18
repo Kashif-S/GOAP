@@ -2,24 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class GoapController<T, S> : MonoBehaviour where T : GoapAgent where S : State 
+public abstract class GoapController<T, S, A, G, E> : MonoBehaviour where T : GoapAgent where S : State where A : Action<T, S> where G : Goal<S> where E : Sensor<S>
 {
-    public List<Action<T, S>> actions;
-    public List<Sensor<S>> sensors;
-    public List<Goal<S>> goals;
-    public Action<T, S> idleAction;
+    public List<A> actions;
+    public List<E> sensors;
+    public List<G> goals;
+    public A idleAction;
     public T agent;
     public S state;
 
-    [HideInInspector] private Planner<T, S> planner;
-    [HideInInspector] private Plan<T, S> plan;
-    [HideInInspector] private Action<T, S> currentAction;
-    [HideInInspector] private Goal<S> currentGoal;
+    [HideInInspector] private Planner<T, S, A> planner;
+    [HideInInspector] private Plan<T, S, A> plan;
+    [HideInInspector] private A currentAction;
+    [HideInInspector] protected G currentGoal;
 
     void Awake()
     {
         InitializeState();
-        planner = new Planner<T, S>();
+        planner = new Planner<T, S, A>();
     }
 
     private void FixedUpdate()
@@ -31,15 +31,10 @@ public abstract class GoapController<T, S> : MonoBehaviour where T : GoapAgent w
 
     private void UpdateState()
     {
-        foreach (Sensor<S> sensor in sensors)
+        foreach (E sensor in sensors)
         {
             sensor.UpdateState(state);
         }
-    }
-
-    private void UpdateGoal()
-    {
-        currentGoal = goals[0];
     }
 
     private void ExecutePlan()
@@ -65,4 +60,5 @@ public abstract class GoapController<T, S> : MonoBehaviour where T : GoapAgent w
     }
 
     protected abstract void InitializeState();
+    protected abstract void UpdateGoal();
 }

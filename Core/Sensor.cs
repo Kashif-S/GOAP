@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Sensor<T> : ScriptableObject where T : State
+public abstract class Sensor<S> : ScriptableObject where S : State
 {
-    public abstract void UpdateState(T state);
+    public abstract void UpdateState(S state);
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InventorySensor : Sensor<InventoryState>
+public class InventorySensor : ExampleSensor
 {
     public override void UpdateState(InventoryState state)
     {

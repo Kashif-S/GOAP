@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ProfitGoal : Goal<InventoryState>
+public class ProfitGoal : ExampleGoal
 {
     public override bool ValidateState(InventoryState state)
     {

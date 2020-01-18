@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Goal<T> : ScriptableObject where T : State
+public abstract class Goal<S> : ScriptableObject where S : State
 {
-    public abstract bool ValidateState(T state);
+    public abstract bool ValidateState(S state);
 }
