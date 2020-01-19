@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class ExampleSensor : Sensor<InventoryState>
+public abstract class ExampleSensor : Sensor<MiningAgent, InventoryState>
 {
 
 }

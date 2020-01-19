@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class Plan<T, S, A> where T : GoapAgent where S : State where A : Action<T, S>
 {
@@ -20,5 +21,10 @@ public class Plan<T, S, A> where T : GoapAgent where S : State where A : Action<
         } else {
             return null;
         }
+    }
+
+    public int GetLength()
+    {
+        return actionQueue.Count;
     }
 }

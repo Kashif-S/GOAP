@@ -5,8 +5,8 @@ using UnityEngine;
 public abstract class Action<T, S> : ScriptableObject where T : GoapAgent where S : State
 {
     public abstract int GetCost();
-    public abstract bool ValidateState(State state);
-    public abstract S UpdateState(State state);
+    public abstract bool ValidateState(S state);
+    public abstract S UpdateState(S state);
     public bool act(T agent, S state)
     {
         if(validateLocation(agent, state))

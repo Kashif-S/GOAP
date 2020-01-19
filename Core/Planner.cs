@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class Planner<T, S, A> where T : GoapAgent where S : State where A : Action<T, S>
 {
@@ -10,7 +11,7 @@ public class Planner<T, S, A> where T : GoapAgent where S : State where A : Acti
 
         // TODO: Replace this with a heap
         List<PlannerState> openSet = new List<PlannerState>();
-        HashSet<State> closedSet = new HashSet<State>();
+        HashSet<S> closedSet = new HashSet<S>();
         openSet.Add(new PlannerState(state, null, null, 0));
 
         while (openSet.Count > 0)
@@ -34,14 +35,15 @@ public class Planner<T, S, A> where T : GoapAgent where S : State where A : Acti
 
             for (int i = 0; i < actions.Count; i++)
             {
-                S newState = actions[i].UpdateState(currentState.state);
-                if (closedSet.Contains(newState) && actions[i].ValidateState(currentState.state))
+                S newState = actions[i].UpdateState(currentState.state.DeepClone());
+                if (!closedSet.Contains(newState) && actions[i].ValidateState(currentState.state))
                 {
                     int newGCost = currentState.gCost + actions[i].GetCost();
                     // TODO: calculate hCost
                     PlannerState newPlannerState = new PlannerState(newState, currentState, actions[i], newGCost);
                     if (!openSet.Contains(newPlannerState))
                     {
+                        Debug.Log(newState.GetHashCode());
                         openSet.Add(newPlannerState);
                     }
                 }
@@ -88,6 +90,18 @@ public class Planner<T, S, A> where T : GoapAgent where S : State where A : Acti
             {
                 return gCost + hCost;
             }
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || GetType() != obj.GetType()) return false;
+            PlannerState p = (PlannerState)obj;
+            return state.Equals(p.state);
+        }
+
+        public override int GetHashCode()
+        {
+            return state.GetHashCode();
         }
     }
 }

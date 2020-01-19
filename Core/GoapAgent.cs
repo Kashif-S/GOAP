@@ -4,5 +4,5 @@ using UnityEngine;
 
 public abstract class GoapAgent : MonoBehaviour
 {
-
+    public int actionProgress = 0;
 }
