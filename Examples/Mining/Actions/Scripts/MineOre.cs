@@ -9,7 +9,7 @@ public class MineOre : ExampleAction
 
     public override int GetCost()
     {
-        return 50;
+        return (totalProgess * 100) / GameManager.oreValue;
     }
 
     public override InventoryState UpdateState(InventoryState state)

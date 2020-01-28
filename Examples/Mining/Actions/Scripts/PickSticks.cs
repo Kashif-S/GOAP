@@ -9,7 +9,7 @@ public class PickSticks : ExampleAction
 
     public override int GetCost()
     {
-        return 1000;
+        return (totalProgess * 100) / GameManager.stickValue;
     }
 
     public override InventoryState UpdateState(InventoryState state)

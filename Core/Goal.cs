@@ -5,4 +5,5 @@ using UnityEngine;
 public abstract class Goal<S> : ScriptableObject where S : State
 {
     public abstract bool ValidateState(S state);
+    public abstract int CalculateHCost(S state);
 }

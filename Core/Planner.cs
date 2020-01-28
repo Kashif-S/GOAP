@@ -12,7 +12,7 @@ public class Planner<T, S, A> where T : GoapAgent where S : State where A : Acti
         // TODO: Replace this with a heap
         List<PlannerState> openSet = new List<PlannerState>();
         HashSet<S> closedSet = new HashSet<S>();
-        openSet.Add(new PlannerState(state, null, null, 0));
+        openSet.Add(new PlannerState(state, null, null, 0, goal.CalculateHCost(state)));
 
         while (openSet.Count > 0)
         {
@@ -39,8 +39,8 @@ public class Planner<T, S, A> where T : GoapAgent where S : State where A : Acti
                 if (!closedSet.Contains(newState) && actions[i].ValidateState(currentState.state))
                 {
                     int newGCost = currentState.gCost + actions[i].GetCost();
-                    // TODO: calculate hCost
-                    PlannerState newPlannerState = new PlannerState(newState, currentState, actions[i], newGCost);
+                    int hCost = goal.CalculateHCost(newState);
+                    PlannerState newPlannerState = new PlannerState(newState, currentState, actions[i], newGCost, hCost);
                     if (!openSet.Contains(newPlannerState))
                     {
                         Debug.Log(newState.GetHashCode());
@@ -74,14 +74,13 @@ public class Planner<T, S, A> where T : GoapAgent where S : State where A : Acti
         public int gCost { get; private set; }
         public int hCost { get; private set; }
 
-        public PlannerState(S state, PlannerState previousState, A action, int gCost)
+        public PlannerState(S state, PlannerState previousState, A action, int gCost, int hCost)
         {
             this.state = state;
             this.previousState = previousState;
             this.action = action;
             this.gCost = gCost;
-            // TODO: Replace this with an actual heuristic
-            this.hCost = 0;
+            this.hCost = hCost;
         }
 
         public int fCost

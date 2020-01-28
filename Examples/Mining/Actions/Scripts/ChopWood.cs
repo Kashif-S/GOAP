@@ -9,7 +9,7 @@ public class ChopWood : ExampleAction
 
     public override int GetCost()
     {
-        return 100;
+        return (totalProgess * 100) / GameManager.logValue;
     }
 
     public override InventoryState UpdateState(InventoryState state)
